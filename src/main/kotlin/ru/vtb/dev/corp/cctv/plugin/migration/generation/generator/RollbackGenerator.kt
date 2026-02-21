@@ -1,4 +1,4 @@
-package ru.vtb.dev.corp.cctv.plugin.migration.generation
+package ru.vtb.dev.corp.cctv.plugin.migration.generation.generator
 
 
 fun generateRollback(query: String): String {

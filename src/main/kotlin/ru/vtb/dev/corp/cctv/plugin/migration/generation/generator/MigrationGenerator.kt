@@ -1,4 +1,4 @@
-package ru.vtb.dev.corp.cctv.plugin.migration.generation
+package ru.vtb.dev.corp.cctv.plugin.migration.generation.generator
 
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
@@ -6,6 +6,7 @@ import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.codeStyle.CodeStyleManager
+import ru.vtb.dev.corp.cctv.plugin.migration.generation.plugin.MigrationInput
 import java.lang.StringBuilder
 
 object MigrationGenerator {

@@ -8,7 +8,7 @@
   <actions>
     <action
       id="com.example.migrations.GenerateMigrationAction"
-      class="ru.vtb.dev.corp.cctv.plugin.migration.generation.GenerateMigrationAction"
+      class="ru.vtb.dev.corp.cctv.plugin.migration.generation.plugin.GenerateMigrationAction"
       text="Generate Migration"
       description="Generate XML migration files">
       <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>

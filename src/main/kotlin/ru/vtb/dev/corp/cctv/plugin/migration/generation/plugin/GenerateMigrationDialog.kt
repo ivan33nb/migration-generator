@@ -1,4 +1,4 @@
-package ru.vtb.dev.corp.cctv.plugin.migration.generation
+package ru.vtb.dev.corp.cctv.plugin.migration.generation.plugin
 
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.project.Project
@@ -8,6 +8,7 @@ import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.FormBuilder
 import com.intellij.util.ui.JBUI
+import ru.vtb.dev.corp.cctv.plugin.migration.generation.const.MIGRATION_AUTHOR_NAME_KEY
 import java.awt.Dimension
 import javax.swing.JPanel
 
@@ -36,7 +37,9 @@ class GenerateMigrationDialog(project: Project, dirName: String) : DialogWrapper
     init {
         title = "Generate migration"
         versionField = JBTextField("$dirName-")
-        authorField = JBTextField(PropertiesComponent.getInstance(project).getValue(MIGRATION_AUTHOR_NAME_KEY)?: "")
+        authorField = JBTextField(PropertiesComponent.getInstance(project).getValue(
+            MIGRATION_AUTHOR_NAME_KEY
+        )?: "")
         init()
     }
 
