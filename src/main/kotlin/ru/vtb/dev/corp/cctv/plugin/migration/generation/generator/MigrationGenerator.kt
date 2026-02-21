@@ -1,4 +1,4 @@
-package ru.vtb.dev.corp.cctv.plugin.migration.generation
+package ru.vtb.dev.corp.cctv.plugin.migration.generation.generator
 
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
@@ -6,6 +6,7 @@ import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.codeStyle.CodeStyleManager
+import ru.vtb.dev.corp.cctv.plugin.migration.generation.plugin.MigrationInput
 import java.lang.StringBuilder
 
 object MigrationGenerator {
@@ -13,12 +14,16 @@ object MigrationGenerator {
     fun generate(project: Project, targetDir: VirtualFile, input: MigrationInput): String {
         val result = StringBuilder()
         val tagFileName = "${input.version}-${input.name}.xml"
-        val tagFile = if (input.withRollback) buildMigrationTagXml(input) else buildMigrationTagXmlWithoutRollback(input)
+        val tagFile =
+            if (input.withRollback) buildMigrationTagXml(input) else buildMigrationTagXmlWithoutRollback(
+                input
+            )
         val sqlFileName = "${input.version}-${input.name}.sql"
 
         WriteCommandAction.runWriteCommandAction(project) {
             if (input.withReleaseTag) {
-                val releaseTagName = input.version.replace(Regex("-.*$"), "") + "-00-release-tag.xml"
+                val releaseTagName =
+                    "${input.version.replace(Regex("-.*$"), "")}-00-release-tag.xml"
                 val releaseTagFile = buildReleaseTagXml(input.author, input.version)
                 val createdFile = createOrReplace(targetDir, releaseTagName, releaseTagFile)
                 createdFile.refresh(false, false)
@@ -41,8 +46,9 @@ object MigrationGenerator {
 
             if (input.withRollback) {
                 val rollbackFileName = "${input.version}-${input.name}-rollback.sql"
-                val rollbackScript = if (input.generateRollback) "${generateRollback(input.sql)}\n" else "${input.rollback}\n"
-                val createdRollbackFile = createOrReplace(targetDir, rollbackFileName, rollbackScript)
+                val rollbackScript = "${input.rollback}\n"
+                val createdRollbackFile =
+                    createOrReplace(targetDir, rollbackFileName, rollbackScript)
                 result.append(generateChangelogTag(rollbackFileName))
                 PsiManager.getInstance(project).findFile(createdRollbackFile)
                     ?.let { CodeStyleManager.getInstance(project).reformat(it) }
@@ -109,10 +115,14 @@ object MigrationGenerator {
               relativeToChangelogFile="true"/>
           </changeSet>
         </databaseChangeLog>
-        
+
     """.trimIndent()
 
-    private fun generateChangelogTag(tagName: String) = """
-        <${tagName}, with bla bla>
+    private fun generateChangelogTag(tagName: String): String {
+        val folder = tagName.replace(Regex("-.*\$"), "")
+        val result = """
+        <include file="db/changelog/$folder/$tagName" relativeToChangelogFile="true"/>
     """.trimIndent()
+        return result
+    }
 }

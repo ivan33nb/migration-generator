@@ -1,4 +1,4 @@
-package ru.vtb.dev.corp.cctv.plugin.migration.generation
+package ru.vtb.dev.corp.cctv.plugin.migration.generation.plugin
 
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.actionSystem.*
@@ -6,10 +6,11 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.text.StringUtil
+import ru.vtb.dev.corp.cctv.plugin.migration.generation.const.MIGRATION_AUTHOR_NAME_KEY
+import ru.vtb.dev.corp.cctv.plugin.migration.generation.generator.MigrationGenerator
 
 class GenerateMigrationAction : AnAction() {
 
-    // Начиная с новых платформ, нужно указать поток для update()
     override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     override fun update(e: AnActionEvent) {
@@ -23,7 +24,14 @@ class GenerateMigrationAction : AnAction() {
         val dir: VirtualFile = e.getData(CommonDataKeys.VIRTUAL_FILE) ?: return
         if (!dir.isDirectory) return
 
-        val dialog = GenerateMigrationDialog(project, "${dir.parent.name}.${dir.name}")
+        val selectedFile = e.getData(CommonDataKeys.VIRTUAL_FILE)
+        val versionFromFolder = when {
+            selectedFile == null -> ""
+            selectedFile.isDirectory -> selectedFile.name
+            else -> selectedFile.parent?.name ?: ""
+        }
+
+        val dialog = GenerateMigrationDialog(project, versionFromFolder)
         if (!dialog.showAndGet()) return
 
         val input = dialog.result()
