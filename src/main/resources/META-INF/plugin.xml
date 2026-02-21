@@ -1,0 +1,17 @@
+<idea-plugin>
+  <id>com.example.migrations</id>
+  <name>Migrations Generator</name>
+  <vendor>you</vendor>
+
+  <depends>com.intellij.modules.platform</depends>
+
+  <actions>
+    <action
+      id="com.example.migrations.GenerateMigrationAction"
+      class="ru.vtb.dev.corp.cctv.plugin.migration.generation.GenerateMigrationAction"
+      text="Generate Migration"
+      description="Generate XML migration files">
+      <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+    </action>
+  </actions>
+</idea-plugin>
