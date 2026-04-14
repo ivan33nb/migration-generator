@@ -49,13 +49,11 @@ object MigrationGenerator {
                 val rollbackScript = "${input.rollback}\n"
                 val createdRollbackFile =
                     createOrReplace(targetDir, rollbackFileName, rollbackScript)
-                result.append(generateChangelogTag(rollbackFileName))
                 PsiManager.getInstance(project).findFile(createdRollbackFile)
                     ?.let { CodeStyleManager.getInstance(project).reformat(it) }
                 createdRollbackFile.refresh(false, false)
             }
         }
-        print(result)
         return result.toString()
     }
 
