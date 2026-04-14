@@ -18,14 +18,7 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
     intellijPlatform {
-        // Целевая IDE (выбирай ту ветку, под которую хочешь поддерживать плагин)
-        intellijIdea("2025.3.2")
-
-        // Если будешь работать с Java PSI/инспекциями/рефакторингами — подключи Java-плагин:
-        // bundledPlugin("com.intellij.java")
-
-        // Если планируешь писать тесты:
-        // testFramework(TestFrameworkType.Platform)
+        intellijIdea("2025.3.1")
     }
 }
 
